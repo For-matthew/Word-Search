@@ -262,11 +262,11 @@ body {
 /* RESPONSIVE DESIGN PARA SA PHONES AT TABLETS */
 @media (max-width: 768px) {
   .layout-container {
-    padding: 5px; /* Bawasan ang space sa labas para lumapad ang laro */
+    padding: 20px; /* Tinaasan ang padding para lumiit yung puting box at makita ang blue background */
   }
   
   .main-content {
-    padding: 15px 10px; /* Bawasan ang puting space sa loob */
+    padding: 15px 12px; 
   }
 
   .header-box {
@@ -275,13 +275,13 @@ body {
   }
   
   .logo-text-container {
-    flex-direction: column; /* Ipatong ang logo sa ibabaw ng text para mas maluwag */
+    flex-direction: column; 
     gap: 10px;
-    font-size: 1.2rem; /* Paliitin ang title font mula 2.5rem para hindi mag-wrap */
+    font-size: 1.2rem; 
   }
   
   .logo-image-container {
-    margin-left: 0; /* Ibalik sa gitna ang logo */
+    margin-left: 0; 
   }
   
   .real-cws-logo {
@@ -290,13 +290,13 @@ body {
   }
 
   .logo-word-search span {
-    padding: 4px 6px; /* Paliitin ang mga colored boxes ng title */
+    padding: 4px 6px; 
     border-radius: 5px;
     margin: 2px 1px;
   }
 
   .space {
-    width: 5px; /* Paliitin ang space sa gitna ng WORD at SEARCH */
+    width: 5px; 
   }
 
   .subtitle {
@@ -312,13 +312,14 @@ body {
   
   .grid-container {
     width: 100%;
-    gap: 2px; /* Paliitin ang gap para hindi lumagpas sa screen ang 12 letters */
+    gap: 3px; 
   }
 
   .grid-cell {
-    font-size: 0.8rem; /* Paliitin ang letters sa grid */
-    border-radius: 4px;
-    border-width: 1px;
+    font-size: 1.1rem; /* Pinalaki ang letters */
+    font-weight: 900;  /* Pinakapal para mas mabasa */
+    border-radius: 5px;
+    border-width: 1.5px;
   }
   
   .side-panel {
@@ -329,6 +330,6 @@ body {
 
   .word-item {
     padding: 8px 10px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
 }
