@@ -1,0 +1,270 @@
+:root {
+  --primary-blue: #007bff;
+  --bg-color: #2ea3f2;
+  --cell-bg: #ffffff;
+  --highlight-color: #fef08a; /* Yellow kapag nag-dradrag */
+  --highlight-border: #facc15;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: repeating-conic-gradient(
+    from 0deg,
+    #1eaaf1 0deg 15deg,
+    #36bdfa 15deg 30deg
+  );
+  min-height: 100vh;
+  overscroll-behavior-y: contain; 
+}
+
+.layout-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.main-content {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  max-width: 900px;
+  width: 100%;
+  z-index: 1;
+}
+
+/* HEADER STYLES */
+.header-box {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px dashed #ccc;
+}
+
+.logo-text-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  font-size: 2.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  position: relative; 
+}
+
+.logo-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -50px; 
+}
+
+.real-cws-logo {
+  height: 150px; 
+  width: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0px 8px 15px rgba(0,0,0,0.25);
+  background-color: white;
+}
+
+.logo-word-search span {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 8px;
+  margin: 0 2px;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  box-shadow: 0 3px 5px rgba(0,0,0,0.15);
+}
+
+.letter-w { background-color: #3b82f6; } 
+.letter-o { background-color: #fbbf24; } 
+.letter-r { background-color: #ef4444; } 
+.letter-d { background-color: #22c55e; } 
+.space { background: none; box-shadow: none; width: 10px; }
+.letter-s { background-color: #ef4444; } 
+.letter-e { background-color: #22c55e; } 
+.letter-a { background-color: #3b82f6; } 
+.letter-r2 { background-color: #fbbf24; } 
+.letter-c { background-color: #a855f7; } 
+.letter-h { background-color: #f97316; } 
+
+.subtitle {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  background-color: #ef4444; 
+  display: inline-block;
+  padding: 8px 30px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+/* GAME AREA LAYOUT */
+.game-area {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 5px;
+  flex: 2; 
+  user-select: none; 
+  touch-action: none; 
+}
+
+/* BASE CELL STYLING - Ibinabalik ang puting box at border */
+.grid-cell {
+  background-color: var(--cell-bg);
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+/* DRAG HIGHLIGHT (Yellow lang kapag nagda-drag) */
+.grid-cell.selected {
+  background-color: var(--highlight-color);
+  border-color: var(--highlight-border);
+  color: #713f12;
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* WRONG (Red + Vibrate) */
+@keyframes vibrateShake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+.grid-cell.wrong {
+  background-color: #ef4444; 
+  color: white;
+  border-color: #b91c1c;
+  animation: vibrateShake 0.3s ease-in-out;
+}
+
+/* FOUND THEMES - Iba't ibang kulay kapag nahanap na ang salita */
+.grid-cell.found.theme-blue, .word-item.found-word.theme-blue {
+  background-color: #3b82f6; border-color: #2563eb; color: white;
+}
+.grid-cell.found.theme-yellow, .word-item.found-word.theme-yellow {
+  background-color: #eab308; border-color: #ca8a04; color: white;
+}
+.grid-cell.found.theme-red, .word-item.found-word.theme-red {
+  background-color: #ef4444; border-color: #dc2626; color: white;
+}
+.grid-cell.found.theme-green, .word-item.found-word.theme-green {
+  background-color: #22c55e; border-color: #16a34a; color: white;
+}
+.grid-cell.found.theme-purple, .word-item.found-word.theme-purple {
+  background-color: #a855f7; border-color: #9333ea; color: white;
+}
+.grid-cell.found.theme-orange, .word-item.found-word.theme-orange {
+  background-color: #f97316; border-color: #ea580c; color: white;
+}
+
+/* SIDE PANEL (Right Side) */
+.side-panel {
+  flex: 1;
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 15px;
+  border: 2px solid #e2e8f0;
+}
+
+.side-panel h3 {
+  margin-top: 0;
+  color: #334155;
+  text-align: center;
+}
+
+.word-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.word-item {
+  background: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #64748b;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  text-align: center;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.word-item.found-word {
+  text-decoration: line-through;
+}
+
+.reset-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.reset-btn:hover {
+  background-color: #dc2626;
+}
+
+.winner-message {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #dcfce7;
+  border: 2px solid #4ade80;
+  border-radius: 8px;
+  text-align: center;
+  color: #166534;
+  animation: bounceIn 0.5s;
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 768px) {
+  .game-area { flex-direction: column; }
+  .grid-container { width: 100%; }
+  .grid-cell { font-size: 1rem; border-radius: 6px; gap: 2px; }
+  .side-panel { width: 100%; box-sizing: border-box; }
+  .logo-text-container { font-size: 1.5rem; }
+  .logo-image-container { margin-left: 0; }
+  .real-cws-logo { height: 100px; width: 100px; }
+}
