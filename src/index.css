@@ -259,12 +259,76 @@ body {
   100% { transform: scale(1); }
 }
 
+/* RESPONSIVE DESIGN PARA SA PHONES AT TABLETS */
 @media (max-width: 768px) {
-  .game-area { flex-direction: column; }
-  .grid-container { width: 100%; }
-  .grid-cell { font-size: 1rem; border-radius: 6px; gap: 2px; }
-  .side-panel { width: 100%; box-sizing: border-box; }
-  .logo-text-container { font-size: 1.5rem; }
-  .logo-image-container { margin-left: 0; }
-  .real-cws-logo { height: 100px; width: 100px; }
+  .layout-container {
+    padding: 5px; /* Bawasan ang space sa labas para lumapad ang laro */
+  }
+  
+  .main-content {
+    padding: 15px 10px; /* Bawasan ang puting space sa loob */
+  }
+
+  .header-box {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+  }
+  
+  .logo-text-container {
+    flex-direction: column; /* Ipatong ang logo sa ibabaw ng text para mas maluwag */
+    gap: 10px;
+    font-size: 1.2rem; /* Paliitin ang title font mula 2.5rem para hindi mag-wrap */
+  }
+  
+  .logo-image-container {
+    margin-left: 0; /* Ibalik sa gitna ang logo */
+  }
+  
+  .real-cws-logo {
+    height: 90px;
+    width: 90px;
+  }
+
+  .logo-word-search span {
+    padding: 4px 6px; /* Paliitin ang mga colored boxes ng title */
+    border-radius: 5px;
+    margin: 2px 1px;
+  }
+
+  .space {
+    width: 5px; /* Paliitin ang space sa gitna ng WORD at SEARCH */
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+    padding: 6px 15px;
+    margin-top: 5px;
+  }
+
+  .game-area {
+    flex-direction: column; 
+    gap: 15px;
+  }
+  
+  .grid-container {
+    width: 100%;
+    gap: 2px; /* Paliitin ang gap para hindi lumagpas sa screen ang 12 letters */
+  }
+
+  .grid-cell {
+    font-size: 0.8rem; /* Paliitin ang letters sa grid */
+    border-radius: 4px;
+    border-width: 1px;
+  }
+  
+  .side-panel {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px;
+  }
+
+  .word-item {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
 }
