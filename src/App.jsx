@@ -238,12 +238,6 @@ export default function App() {
 
   return (
     <>
-      <div className="portrait-warning">
-        <div className="phone-icon"></div>
-        <h2>OOPS!</h2>
-        <p>Please rotate your phone<br/>to landscape to play!</p>
-      </div>
-
       {isWinner && (
         <div className="modal-overlay" style={{ zIndex: 99999 }}>
           {/* FIX: Binigyan natin ng absolute high z-index ang confetti para sure na lilitaw */}

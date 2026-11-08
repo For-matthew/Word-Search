@@ -75,10 +75,8 @@ body {
   100% { transform: rotate(90deg); }
 }
 
-@media screen and (max-width: 768px) and (orientation: portrait) {
-  .portrait-warning { display: flex; }
-  .layout-container { display: none !important; }
-}
+/* Portrait na ang may sariling layout na (tingnan sa dulo ng file),
+   kaya wala nang "rotate your phone" na screen. */
 /* ------------------------------------ */
 
 .layout-container {
@@ -507,4 +505,150 @@ body {
   .real-cws-logo { height: 22px; width: 22px; }
   .logo-text-container { font-size: 0.7rem; }
   .subtitle { font-size: 0.55rem; }
+}
+
+/* ========================================================= */
+/* MOBILE PORTRAIT VIEW                                      */
+/*                                                           */
+/* Layout (patayo):  header                                  */
+/*                   GRID CARD (square, sakto sa lapad)      */
+/*                   words (2 columns)                       */
+/*                   reset                                   */
+/*                                                           */
+/* --card-size = mas maliit sa (lapad ng screen) o (taas ng  */
+/* screen minus header at words). Kung gusto mong palakihin  */
+/* ang words/heading: dagdagan ang 0.52 sa --ui-font.        */
+/* Letra: dagdagan ang 0.68 sa .grid-cell.                   */
+/* ========================================================= */
+@media screen and (max-width: 768px) and (orientation: portrait) {
+  :root {
+    /* Fallback kung walang JS value; pinapalitan ng App.jsx ang --app-h */
+    --app-h: 100vh;
+    --card-size: min(calc(100vw - 28px), max(250px, calc(var(--app-h) - 320px)));
+    --ui-font: calc(var(--card-size) / 12 * 0.52);
+  }
+
+  @supports (height: 100dvh) {
+    :root { --app-h: 100dvh; }
+  }
+
+  .layout-container {
+    padding: 6px;
+    min-height: var(--app-h);
+    align-items: center;
+  }
+
+  .main-content {
+    padding: 8px;
+    border-radius: 14px;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Para ang card at side panel ay direktang bahagi ng patayong layout */
+  .game-area { display: contents; }
+
+  .header-box {
+    width: 100%;
+    margin: 0;
+    padding: 0 0 8px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 8px 8px -8px rgba(0, 0, 0, 0.3);
+  }
+
+  .logo-text-container {
+    gap: 8px;
+    font-size: min(1rem, 4.4vw);
+    flex-wrap: nowrap;
+  }
+  .logo-image-container { margin-left: 0; }
+  .real-cws-logo { height: 40px; width: 40px; box-shadow: 0 3px 8px rgba(0,0,0,0.25); }
+
+  .logo-word-search span { padding: 3px 5px; border-radius: 5px; margin: 1px; }
+  .subtitle { font-size: 0.8rem; padding: 3px 12px; margin: 0; }
+
+  .grid-card {
+    flex: none;
+    width: var(--card-size);
+    height: var(--card-size);
+    padding: 5px;
+    border-width: 1px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+  }
+
+  .grid-container {
+    width: 100%;
+    height: 100%;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: repeat(12, minmax(0, 1fr));
+    gap: 2px;
+  }
+
+  .grid-cell {
+    aspect-ratio: auto;
+    min-width: 0;
+    min-height: 0;
+    font-size: calc(var(--card-size) / 12 * 0.68);
+    border-radius: 5px;
+    border-width: 1px;
+  }
+
+  .side-panel {
+    flex: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 8px;
+    border-width: 1px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .side-panel h3 {
+    font-size: var(--ui-font);
+    line-height: 1.15;
+    margin: 0 0 6px 0;
+  }
+
+  /* Words: 2 columns para malaki ang text at hindi masyadong mahaba ang page */
+  .word-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin: 0 0 8px 0;
+    width: 100%;
+  }
+
+  .word-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-width: 0;
+    padding: 0.55em 0.3em;
+    border-width: 1px;
+    font-size: var(--ui-font);
+    line-height: 1.1;
+  }
+
+  .word-item.found-word { transform: none; }
+
+  .reset-btn {
+    padding: 0.6em;
+    font-size: var(--ui-font);
+    line-height: 1.1;
+  }
+
+  .modal-content { padding: 24px 28px; border-radius: 16px; margin: 0 16px; }
+  .modal-content h2 { font-size: 2rem; margin-bottom: 6px; }
+  .modal-content p { font-size: 1.05rem; margin-bottom: 16px; }
+  .play-again-btn { padding: 10px 26px; font-size: 1.05rem; }
 }
