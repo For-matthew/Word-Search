@@ -15,7 +15,8 @@ body {
     #36bdfa 15deg 30deg
   );
   min-height: 100vh;
-  overflow-y: auto;
+  /* Auto-scroll para makita ang words sa ilalim, pero ang grid ay naka-fix ang size */
+  overflow-y: auto; 
   overscroll-behavior-y: contain;
 }
 
@@ -326,17 +327,17 @@ body {
 }
 
 /* ========================================================= */
-/* MOBILE LANDSCAPE VIEW (Malaki ang Tiles, Words nasa baba) */
+/* MOBILE LANDSCAPE VIEW (Fully Responsive Grid)             */
 /* ========================================================= */
 @media screen and (max-height: 600px) and (orientation: landscape) {
   .layout-container {
-    padding: 10px;
+    padding: 5px;
     height: auto; 
     min-height: 100vh;
   }
 
   .main-content {
-    padding: 15px;
+    padding: 10px;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -344,74 +345,81 @@ body {
   }
 
   .header-box {
-    margin-bottom: 15px;
-    padding-bottom: 10px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
+    box-shadow: none; /* Inalis para mas malinis sa maliit na screen */
+    border-bottom: 2px dashed #ccc;
   }
 
-  .logo-text-container { gap: 8px; font-size: 1.2rem; flex-direction: row; }
+  .logo-text-container { gap: 6px; font-size: 1rem; flex-direction: row; }
   .logo-image-container { margin-left: 0; }
-  .real-cws-logo { height: 40px; width: 40px; }
+  .real-cws-logo { height: 35px; width: 35px; }
 
-  .logo-word-search span { padding: 3px 6px; border-radius: 4px; margin: 1px; }
-  .subtitle { font-size: 0.8rem; padding: 4px 10px; margin-top: 0; }
+  .logo-word-search span { padding: 2px 4px; border-radius: 4px; margin: 1px; }
+  .subtitle { font-size: 0.75rem; padding: 2px 8px; margin-top: 0; }
 
   .game-area {
     flex-direction: column;
     align-items: center; 
-    gap: 20px;
+    gap: 10px;
     width: 100%;
   }
 
-  /* Pinalaki natin ang grid! */
+  /* 
+    CRITICAL FIX: Ang max-width ay naka-base sa "vh" (viewport height).
+    Ibig sabihin, hindi lalagpas ang lapad at taas ng puzzle sa available height ng phone mo, 
+    kaya imposibleng maputol siya patayo. 
+  */
   .grid-container {
-    height: auto; 
     width: 100%; 
-    max-width: 450px; /* Saktong laki para fit at readable sa mobile */
-    aspect-ratio: 1;
-    gap: 4px; /* Binigyan ng magandang space */
+    max-width: 60vh; /* Babagay kahit anong haba ng Android o iPhone */
+    height: auto;
+    aspect-ratio: 1 / 1;
+    gap: 3px; 
     margin: 0 auto;
   }
 
   .grid-cell {
-    font-size: 1.4rem; /* Mas malalaking letra para sa mobile */
-    border-radius: 5px;
-    border-width: 2px;
+    font-size: 3.5vh; /* Hahabol din ang laki ng letra sa height ng screen */
+    border-radius: 4px;
+    border-width: 1px;
   }
 
   .side-panel {
     width: 100%;
-    padding: 15px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 5px;
   }
 
-  .side-panel h3 { font-size: 1rem; margin-bottom: 10px; }
+  .side-panel h3 { font-size: 0.9rem; margin-bottom: 5px; }
 
   .word-list {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 6px;
+    margin-bottom: 10px;
     width: 100%;
   }
 
   .word-item {
-    padding: 8px 12px;
-    font-size: 0.95rem; /* Slightly larger words list */
-    flex: 1 1 calc(33.333% - 10px); 
-    min-width: 120px;
+    padding: 6px 10px;
+    font-size: 0.85rem; 
+    flex: 1 1 calc(33.333% - 6px); 
+    min-width: 110px;
   }
 
   .reset-btn {
     width: 100%; 
-    max-width: 250px; /* Mas madaling pindutin ang button */
-    padding: 12px;
-    font-size: 1.1rem;
+    max-width: 200px; 
+    padding: 10px;
+    font-size: 1rem;
   }
 }
