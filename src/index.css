@@ -15,8 +15,7 @@ body {
     #36bdfa 15deg 30deg
   );
   min-height: 100vh;
-  /* Auto-scroll para makita ang words sa ilalim, pero ang grid ay naka-fix ang size */
-  overflow-y: auto; 
+  overflow-y: auto;
   overscroll-behavior-y: contain;
 }
 
@@ -327,99 +326,146 @@ body {
 }
 
 /* ========================================================= */
-/* MOBILE LANDSCAPE VIEW (Fully Responsive Grid)             */
+/* MOBILE LANDSCAPE VIEW                                     */
+/*                                                           */
+/* Idea: ang laki ng grid ay galing sa TOTAL HEIGHT ng       */
+/* screen (--app-h) minus ang header/padding (--chrome).     */
+/* Kaya palaging sakto ang grid, hindi putol, walang scroll. */
+/* Ang words panel ay nasa KANAN ng grid (gamit ang sobrang  */
+/* lapad ng landscape) para hindi na kailangang mag-scroll.  */
 /* ========================================================= */
 @media screen and (max-height: 600px) and (orientation: landscape) {
+  :root {
+    /* Fallback kung walang JS value. Pinapalitan ito ng App.jsx
+       ng window.innerHeight (pinaka-accurate sa Messenger/FB browser). */
+    --app-h: 100vh;
+    --chrome: 72px; /* header + paddings + gaps */
+    --grid-size: min(calc(var(--app-h) - var(--chrome)), 62vw);
+  }
+
+  @supports (height: 100dvh) {
+    :root { --app-h: 100dvh; }
+  }
+
   .layout-container {
-    padding: 5px;
-    height: auto; 
-    min-height: 100vh;
+    padding: 4px;
+    min-height: var(--app-h);
+    align-items: center;
   }
 
   .main-content {
-    padding: 10px;
+    padding: 6px 10px;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
+    gap: 6px;
     max-width: 100%;
   }
 
   .header-box {
-    margin-bottom: 5px;
-    padding-bottom: 5px;
+    margin: 0;
+    padding: 0 0 4px 0;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    box-shadow: none; /* Inalis para mas malinis sa maliit na screen */
+    box-shadow: none;
     border-bottom: 2px dashed #ccc;
   }
 
-  .logo-text-container { gap: 6px; font-size: 1rem; flex-direction: row; }
+  .logo-text-container { gap: 6px; font-size: 1rem; flex-wrap: nowrap; }
   .logo-image-container { margin-left: 0; }
-  .real-cws-logo { height: 35px; width: 35px; }
+  .real-cws-logo { height: 32px; width: 32px; box-shadow: 0 2px 5px rgba(0,0,0,0.25); }
 
   .logo-word-search span { padding: 2px 4px; border-radius: 4px; margin: 1px; }
-  .subtitle { font-size: 0.75rem; padding: 2px 8px; margin-top: 0; }
+  .subtitle { font-size: 0.75rem; padding: 2px 8px; margin: 0; }
 
+  /* Grid sa kaliwa, words sa kanan */
   .game-area {
-    flex-direction: column;
-    align-items: center; 
-    gap: 10px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
     width: 100%;
   }
 
-  /* 
-    CRITICAL FIX: Ang max-width ay naka-base sa "vh" (viewport height).
-    Ibig sabihin, hindi lalagpas ang lapad at taas ng puzzle sa available height ng phone mo, 
-    kaya imposibleng maputol siya patayo. 
-  */
   .grid-container {
-    width: 100%; 
-    max-width: 60vh; /* Babagay kahit anong haba ng Android o iPhone */
-    height: auto;
-    aspect-ratio: 1 / 1;
-    gap: 3px; 
-    margin: 0 auto;
+    flex: 0 0 auto;
+    width: var(--grid-size);
+    height: var(--grid-size);
+    aspect-ratio: auto;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: repeat(12, minmax(0, 1fr));
+    gap: 2px;
+    margin: 0;
   }
 
   .grid-cell {
-    font-size: 3.5vh; /* Hahabol din ang laki ng letra sa height ng screen */
+    aspect-ratio: auto;
+    min-width: 0;
+    min-height: 0;
+    /* ang letra ay sumusunod sa laki ng cell */
+    font-size: calc(var(--grid-size) / 12 * 0.52);
     border-radius: 4px;
     border-width: 1px;
   }
 
   .side-panel {
-    width: 100%;
-    padding: 10px;
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 360px;
+    height: var(--grid-size);
+    box-sizing: border-box;
+    margin: 0;
+    padding: 8px;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 5px;
+    overflow-y: auto;
   }
 
-  .side-panel h3 { font-size: 0.9rem; margin-bottom: 5px; }
+  .side-panel h3 { font-size: 0.85rem; margin: 0 0 6px 0; }
 
   .word-list {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 6px;
-    margin-bottom: 10px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 5px;
+    margin: 0 0 8px 0;
     width: 100%;
   }
 
   .word-item {
-    padding: 6px 10px;
-    font-size: 0.85rem; 
-    flex: 1 1 calc(33.333% - 6px); 
-    min-width: 110px;
+    flex: none;
+    min-width: 0;
+    padding: 5px 8px;
+    font-size: 0.8rem;
   }
 
+  .word-item.found-word { transform: none; }
+
   .reset-btn {
-    width: 100%; 
-    max-width: 200px; 
-    padding: 10px;
-    font-size: 1rem;
+    margin-top: auto;
+    max-width: none;
+    padding: 8px;
+    font-size: 0.9rem;
   }
+
+  /* Para hindi lumampas ang winner popup sa maikling screen */
+  .modal-content { padding: 16px 28px; border-radius: 14px; }
+  .modal-content h2 { font-size: 1.6rem; margin-bottom: 4px; }
+  .modal-content p { font-size: 1rem; margin-bottom: 12px; }
+  .play-again-btn { padding: 8px 22px; font-size: 1rem; }
+}
+
+/* Napakaikling screens (hal. iPhone SE, o may makapal na browser bar) */
+@media screen and (max-height: 400px) and (orientation: landscape) {
+  :root { --chrome: 60px; }
+
+  .real-cws-logo { height: 24px; width: 24px; }
+  .logo-text-container { font-size: 0.8rem; }
+  .subtitle { font-size: 0.65rem; }
+  .side-panel h3 { font-size: 0.75rem; margin-bottom: 4px; }
+  .word-list { gap: 3px; }
+  .word-item { padding: 3px 6px; font-size: 0.7rem; }
+  .reset-btn { padding: 6px; font-size: 0.8rem; }
 }

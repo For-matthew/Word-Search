@@ -26,12 +26,19 @@ export default function App() {
   
   const gridRef = useRef(null);
 
-  useEffect(() => {
+useEffect(() => {
+  const update = () => {
     setWindowDimensions({ width: window.innerWidth, height: window.innerHeight });
-    const handleResize = () => setWindowDimensions({ width: window.innerWidth, height: window.innerHeight });
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    document.documentElement.style.setProperty('--app-h', `${window.innerHeight}px`);
+  };
+  update();
+  window.addEventListener('resize', update);
+  window.addEventListener('orientationchange', update);
+  return () => {
+    window.removeEventListener('resize', update);
+    window.removeEventListener('orientationchange', update);
+  };
+}, []);
 
   const generateBoard = useCallback(() => {
     let newGrid = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(''));
