@@ -6,6 +6,7 @@
   --highlight-border: #facc15;
 }
 
+/* Pinigil natin ang pag-scroll ng mismong body para fix lang ang screen */
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -15,6 +16,7 @@ body {
     #36bdfa 15deg 30deg
   );
   min-height: 100vh;
+  overflow: hidden; /* Bawal mag-scroll ang background */
   overscroll-behavior-y: contain; 
 }
 
@@ -74,7 +76,6 @@ body {
   100% { transform: rotate(90deg); }
 }
 
-/* Ipakita ang warning kapag naka PORTRAIT ang phone */
 @media screen and (max-width: 768px) and (orientation: portrait) {
   .portrait-warning { display: flex; }
   .layout-container { display: none !important; }
@@ -83,7 +84,7 @@ body {
 
 .layout-container {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -181,6 +182,7 @@ body {
 .grid-container {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, 1fr); /* DINAGDAG: Para siksik ang vertical rows */
   gap: 5px;
   flex: 2; 
   user-select: none; 
@@ -192,7 +194,6 @@ body {
   background-color: var(--cell-bg);
   border: 2px solid #e2e8f0;
   border-radius: 10px;
-  aspect-ratio: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -205,7 +206,7 @@ body {
 }
 
 .grid-cell:active {
-  transform: scale(0.9); /* Bouncy effect para sa bata kapag pinindot */
+  transform: scale(0.9);
 }
 
 .grid-cell.selected {
@@ -271,13 +272,13 @@ body {
   color: #64748b;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   text-align: center;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy hover/found */
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: 2px solid transparent;
 }
 
 .word-item.found-word {
   text-decoration: line-through;
-  transform: scale(1.05); /* Laki ng konti kapag nahanap */
+  transform: scale(1.05);
 }
 
 .reset-btn {
@@ -325,23 +326,24 @@ body {
 }
 
 /* ========================================================= */
-/* RESPONSIVE DESIGN - MOBILE LANDSCAPE (ZOOMED OUT EFFECT)  */
+/* STRICT LANDSCAPE SIZING (Para hindi maputol ang ilalim)   */
 /* ========================================================= */
 @media screen and (max-height: 600px) and (orientation: landscape) {
   .layout-container {
-    padding: 10px; /* Maliit na padding para lumabas yung background pero max space yung game */
-    align-items: stretch; 
+    padding: 5px; 
+    height: 100vh; /* Naka-fix na ang height sa buong screen */
+    align-items: center; 
   }
   
   .main-content {
-    padding: 10px 15px; 
-    border-radius: 15px;
+    padding: 8px 10px; 
+    height: calc(100vh - 10px); /* Eksakto lang sa taas ng phone para walang putol */
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    box-sizing: border-box;
   }
 
-  /* Pinaliit ang header para hindi mag-take up ng space */
   .header-box {
     margin-bottom: 5px;
     padding-bottom: 5px;
@@ -349,46 +351,48 @@ body {
     align-items: center;
     justify-content: center;
     gap: 15px;
+    flex-shrink: 0; /* Hindi liliit ang header */
   }
   
-  .logo-text-container { gap: 8px; font-size: 1.1rem; flex-direction: row; }
+  .logo-text-container { gap: 8px; font-size: 1rem; flex-direction: row; }
   .logo-image-container { margin-left: 0; }
-  .real-cws-logo { height: 40px; width: 40px; } /* Sobrang liit na logo para makatipid sa height */
+  .real-cws-logo { height: 30px; width: 30px; } /* Pinaliit pa lalo para mas malaki area ng grid */
 
   .logo-word-search span { padding: 2px 4px; border-radius: 4px; margin: 1px; }
-  .subtitle { font-size: 0.75rem; padding: 4px 10px; margin-top: 0; }
+  .subtitle { font-size: 0.7rem; padding: 3px 8px; margin-top: 0; }
 
-  /* Magkatabi ang grid at word list sa landscape */
   .game-area {
     flex-direction: row; 
-    gap: 15px;
-    flex: 1;
-    min-height: 0;
+    gap: 12px;
+    flex: 1; /* Sasakupin ang natitirang height */
+    min-height: 0; /* CRITICAL: Ito ang mag-aallow sa grid na lumiit kung maliit ang screen */
+    align-items: stretch;
   }
   
   .grid-container {
-    height: 100%;
-    aspect-ratio: 1;
+    height: 100%; /* Susunod sa exact height na natitira */
+    max-width: calc(100vw - 180px); /* Limitahan ang width para may space ang side panel */
+    aspect-ratio: 1; /* Laging square */
     margin: 0 auto;
     gap: 2px;
   }
 
   .grid-cell {
-    font-size: 1.1rem; /* Swak sa screen */
+    font-size: 4vh; /* Responsive Font Size base sa height ng screen */
     border-radius: 4px;
     border-width: 1px;
   }
   
   .side-panel {
-    width: 220px; /* Fix ang width ng side panel */
-    padding: 10px;
-    overflow-y: auto; /* Kung maraming words, magi-scroll lang yung right side */
+    width: 160px; 
+    padding: 8px;
+    overflow-y: auto; 
     display: flex;
     flex-direction: column;
   }
 
-  .side-panel h3 { font-size: 1rem; margin-bottom: 10px; }
-  .word-list { gap: 5px; margin-bottom: 10px; }
-  .word-item { padding: 4px 8px; font-size: 0.8rem; }
-  .reset-btn { padding: 8px; font-size: 0.9rem; margin-top: auto; }
+  .side-panel h3 { font-size: 0.85rem; margin-bottom: 5px; }
+  .word-list { gap: 4px; margin-bottom: 5px; }
+  .word-item { padding: 4px 6px; font-size: 0.75rem; }
+  .reset-btn { padding: 6px; font-size: 0.8rem; margin-top: auto; }
 }
