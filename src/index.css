@@ -15,7 +15,6 @@ body {
     #36bdfa 15deg 30deg
   );
   min-height: 100vh;
-  /* Allow scrolling again para makita ang ilalim na content kung kailangan */
   overflow-y: auto;
   overscroll-behavior-y: contain;
 }
@@ -203,7 +202,7 @@ body {
   color: #333;
   cursor: pointer;
   transition: all 0.1s ease;
-  aspect-ratio: 1; /* Keep it square */
+  aspect-ratio: 1;
 }
 
 .grid-cell:active {
@@ -327,12 +326,12 @@ body {
 }
 
 /* ========================================================= */
-/* MOBILE LANDSCAPE VIEW (Words list moved below the grid)   */
+/* MOBILE LANDSCAPE VIEW (Malaki ang Tiles, Words nasa baba) */
 /* ========================================================= */
 @media screen and (max-height: 600px) and (orientation: landscape) {
   .layout-container {
     padding: 10px;
-    height: auto; /* Allow expanding if content is long */
+    height: auto; 
     min-height: 100vh;
   }
 
@@ -344,9 +343,8 @@ body {
     max-width: 100%;
   }
 
-  /* Compact header */
   .header-box {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     padding-bottom: 10px;
     display: flex;
     align-items: center;
@@ -361,28 +359,29 @@ body {
   .logo-word-search span { padding: 3px 6px; border-radius: 4px; margin: 1px; }
   .subtitle { font-size: 0.8rem; padding: 4px 10px; margin-top: 0; }
 
-  /* Change layout to column (Grid on top, Words below) */
   .game-area {
     flex-direction: column;
-    align-items: center; /* Center the grid */
+    align-items: center; 
     gap: 20px;
+    width: 100%;
   }
 
-  /* Grid is allowed to be as big as possible while fitting the screen height */
+  /* Pinalaki natin ang grid! */
   .grid-container {
-    height: 75vh; /* Take up 75% of the screen height */
-    width: auto; /* Let width adjust based on height to stay square */
+    height: auto; 
+    width: 100%; 
+    max-width: 450px; /* Saktong laki para fit at readable sa mobile */
     aspect-ratio: 1;
-    gap: 3px;
+    gap: 4px; /* Binigyan ng magandang space */
+    margin: 0 auto;
   }
 
   .grid-cell {
-    font-size: 2.5vh; /* Scale font with height */
-    border-radius: 6px;
+    font-size: 1.4rem; /* Mas malalaking letra para sa mobile */
+    border-radius: 5px;
     border-width: 2px;
   }
 
-  /* Side panel becomes a bottom panel */
   .side-panel {
     width: 100%;
     padding: 15px;
@@ -393,26 +392,26 @@ body {
 
   .side-panel h3 { font-size: 1rem; margin-bottom: 10px; }
 
-  /* Display words in a grid/wrap instead of a single column */
   .word-list {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
     margin-bottom: 15px;
+    width: 100%;
   }
 
   .word-item {
     padding: 8px 12px;
-    font-size: 0.9rem;
-    flex: 1 1 calc(33.333% - 10px); /* Display in roughly 3 columns */
-    min-width: 100px;
+    font-size: 0.95rem; /* Slightly larger words list */
+    flex: 1 1 calc(33.333% - 10px); 
+    min-width: 120px;
   }
 
   .reset-btn {
-    width: 50%; /* Make button fit nicely below words */
-    max-width: 200px;
-    padding: 10px;
-    font-size: 1rem;
+    width: 100%; 
+    max-width: 250px; /* Mas madaling pindutin ang button */
+    padding: 12px;
+    font-size: 1.1rem;
   }
 }
