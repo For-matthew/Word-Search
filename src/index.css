@@ -2,11 +2,10 @@
   --primary-blue: #007bff;
   --bg-color: #2ea3f2;
   --cell-bg: #ffffff;
-  --highlight-color: #fef08a; 
+  --highlight-color: #fef08a;
   --highlight-border: #facc15;
 }
 
-/* Pinigil natin ang pag-scroll ng mismong body para fix lang ang screen */
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,8 +15,9 @@ body {
     #36bdfa 15deg 30deg
   );
   min-height: 100vh;
-  overflow: hidden; /* Bawal mag-scroll ang background */
-  overscroll-behavior-y: contain; 
+  /* Allow scrolling again para makita ang ilalim na content kung kailangan */
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
 }
 
 /* --- ROTATE DEVICE WARNING SCREEN --- */
@@ -84,7 +84,7 @@ body {
 
 .layout-container {
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -119,18 +119,18 @@ body {
   font-size: 2.5rem;
   font-weight: 900;
   text-transform: uppercase;
-  position: relative; 
+  position: relative;
 }
 
 .logo-image-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: -50px; 
+  margin-left: -50px;
 }
 
 .real-cws-logo {
-  height: 150px; 
+  height: 150px;
   width: 150px;
   border-radius: 50%;
   object-fit: cover;
@@ -148,31 +148,31 @@ body {
   box-shadow: 0 3px 5px rgba(0,0,0,0.15);
 }
 
-.letter-w { background-color: #3b82f6; } 
-.letter-o { background-color: #fbbf24; } 
-.letter-r { background-color: #ef4444; } 
-.letter-d { background-color: #22c55e; } 
+.letter-w { background-color: #3b82f6; }
+.letter-o { background-color: #fbbf24; }
+.letter-r { background-color: #ef4444; }
+.letter-d { background-color: #22c55e; }
 .space { background: none; box-shadow: none; width: 10px; }
-.letter-s { background-color: #ef4444; } 
-.letter-e { background-color: #22c55e; } 
-.letter-a { background-color: #3b82f6; } 
-.letter-r2 { background-color: #fbbf24; } 
-.letter-c { background-color: #a855f7; } 
-.letter-h { background-color: #f97316; } 
+.letter-s { background-color: #ef4444; }
+.letter-e { background-color: #22c55e; }
+.letter-a { background-color: #3b82f6; }
+.letter-r2 { background-color: #fbbf24; }
+.letter-c { background-color: #a855f7; }
+.letter-h { background-color: #f97316; }
 
 .subtitle {
   margin-top: 15px;
   font-size: 1.2rem;
   font-weight: bold;
   color: white;
-  background-color: #ef4444; 
+  background-color: #ef4444;
   display: inline-block;
   padding: 8px 30px;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
 
-/* GAME AREA LAYOUT */
+/* GAME AREA LAYOUT (Default for Desktop/Laptop) */
 .game-area {
   display: flex;
   gap: 30px;
@@ -182,11 +182,11 @@ body {
 .grid-container {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(12, 1fr); /* DINAGDAG: Para siksik ang vertical rows */
+  grid-template-rows: repeat(12, 1fr);
   gap: 5px;
-  flex: 2; 
-  user-select: none; 
-  touch-action: none; 
+  flex: 2;
+  user-select: none;
+  touch-action: none;
 }
 
 /* BASE CELL STYLING */
@@ -197,12 +197,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.4rem; 
+  font-size: 1.4rem;
   font-weight: bold;
-  line-height: 1; 
+  line-height: 1;
   color: #333;
   cursor: pointer;
   transition: all 0.1s ease;
+  aspect-ratio: 1; /* Keep it square */
 }
 
 .grid-cell:active {
@@ -226,7 +227,7 @@ body {
 }
 
 .grid-cell.wrong {
-  background-color: #ef4444; 
+  background-color: #ef4444;
   color: white;
   border-color: #b91c1c;
   animation: vibrateShake 0.3s ease-in-out;
@@ -326,73 +327,92 @@ body {
 }
 
 /* ========================================================= */
-/* STRICT LANDSCAPE SIZING (Para hindi maputol ang ilalim)   */
+/* MOBILE LANDSCAPE VIEW (Words list moved below the grid)   */
 /* ========================================================= */
 @media screen and (max-height: 600px) and (orientation: landscape) {
   .layout-container {
-    padding: 5px; 
-    height: 100vh; /* Naka-fix na ang height sa buong screen */
-    align-items: center; 
+    padding: 10px;
+    height: auto; /* Allow expanding if content is long */
+    min-height: 100vh;
   }
-  
+
   .main-content {
-    padding: 8px 10px; 
-    height: calc(100vh - 10px); /* Eksakto lang sa taas ng phone para walang putol */
+    padding: 15px;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
-    box-sizing: border-box;
+    max-width: 100%;
   }
 
+  /* Compact header */
   .header-box {
-    margin-bottom: 5px;
-    padding-bottom: 5px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 15px;
-    flex-shrink: 0; /* Hindi liliit ang header */
   }
-  
-  .logo-text-container { gap: 8px; font-size: 1rem; flex-direction: row; }
+
+  .logo-text-container { gap: 8px; font-size: 1.2rem; flex-direction: row; }
   .logo-image-container { margin-left: 0; }
-  .real-cws-logo { height: 30px; width: 30px; } /* Pinaliit pa lalo para mas malaki area ng grid */
+  .real-cws-logo { height: 40px; width: 40px; }
 
-  .logo-word-search span { padding: 2px 4px; border-radius: 4px; margin: 1px; }
-  .subtitle { font-size: 0.7rem; padding: 3px 8px; margin-top: 0; }
+  .logo-word-search span { padding: 3px 6px; border-radius: 4px; margin: 1px; }
+  .subtitle { font-size: 0.8rem; padding: 4px 10px; margin-top: 0; }
 
+  /* Change layout to column (Grid on top, Words below) */
   .game-area {
-    flex-direction: row; 
-    gap: 12px;
-    flex: 1; /* Sasakupin ang natitirang height */
-    min-height: 0; /* CRITICAL: Ito ang mag-aallow sa grid na lumiit kung maliit ang screen */
-    align-items: stretch;
+    flex-direction: column;
+    align-items: center; /* Center the grid */
+    gap: 20px;
   }
-  
+
+  /* Grid is allowed to be as big as possible while fitting the screen height */
   .grid-container {
-    height: 100%; /* Susunod sa exact height na natitira */
-    max-width: calc(100vw - 180px); /* Limitahan ang width para may space ang side panel */
-    aspect-ratio: 1; /* Laging square */
-    margin: 0 auto;
-    gap: 2px;
+    height: 75vh; /* Take up 75% of the screen height */
+    width: auto; /* Let width adjust based on height to stay square */
+    aspect-ratio: 1;
+    gap: 3px;
   }
 
   .grid-cell {
-    font-size: 4vh; /* Responsive Font Size base sa height ng screen */
-    border-radius: 4px;
-    border-width: 1px;
-  }
-  
-  .side-panel {
-    width: 160px; 
-    padding: 8px;
-    overflow-y: auto; 
-    display: flex;
-    flex-direction: column;
+    font-size: 2.5vh; /* Scale font with height */
+    border-radius: 6px;
+    border-width: 2px;
   }
 
-  .side-panel h3 { font-size: 0.85rem; margin-bottom: 5px; }
-  .word-list { gap: 4px; margin-bottom: 5px; }
-  .word-item { padding: 4px 6px; font-size: 0.75rem; }
-  .reset-btn { padding: 6px; font-size: 0.8rem; margin-top: auto; }
+  /* Side panel becomes a bottom panel */
+  .side-panel {
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .side-panel h3 { font-size: 1rem; margin-bottom: 10px; }
+
+  /* Display words in a grid/wrap instead of a single column */
+  .word-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  .word-item {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    flex: 1 1 calc(33.333% - 10px); /* Display in roughly 3 columns */
+    min-width: 100px;
+  }
+
+  .reset-btn {
+    width: 50%; /* Make button fit nicely below words */
+    max-width: 200px;
+    padding: 10px;
+    font-size: 1rem;
+  }
 }
