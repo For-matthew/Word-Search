@@ -2,7 +2,7 @@
   --primary-blue: #007bff;
   --bg-color: #2ea3f2;
   --cell-bg: #ffffff;
-  --highlight-color: #fef08a; /* Yellow kapag nag-dradrag */
+  --highlight-color: #fef08a; 
   --highlight-border: #facc15;
 }
 
@@ -43,7 +43,7 @@ body {
   text-align: center;
   margin-bottom: 30px;
   padding-bottom: 20px;
-  border-bottom: 2px dashed #ccc;
+  box-shadow: 0px 10px 10px -10px rgba(0, 0, 0, 0.25);
 }
 
 .logo-text-container {
@@ -124,7 +124,7 @@ body {
   touch-action: none; 
 }
 
-/* BASE CELL STYLING - Ibinabalik ang puting box at border */
+/* BASE CELL STYLING */
 .grid-cell {
   background-color: var(--cell-bg);
   border: 2px solid #e2e8f0;
@@ -133,14 +133,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.2rem;
+  font-size: 1.4rem; 
   font-weight: bold;
+  line-height: 1; /* Para hindi lumampas ang font text */
   color: #333;
   cursor: pointer;
   transition: all 0.1s ease;
 }
 
-/* DRAG HIGHLIGHT (Yellow lang kapag nagda-drag) */
 .grid-cell.selected {
   background-color: var(--highlight-color);
   border-color: var(--highlight-border);
@@ -149,7 +149,6 @@ body {
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-/* WRONG (Red + Vibrate) */
 @keyframes vibrateShake {
   0% { transform: translateX(0); }
   25% { transform: translateX(-4px); }
@@ -165,7 +164,7 @@ body {
   animation: vibrateShake 0.3s ease-in-out;
 }
 
-/* FOUND THEMES - Iba't ibang kulay kapag nahanap na ang salita */
+/* FOUND THEMES */
 .grid-cell.found.theme-blue, .word-item.found-word.theme-blue {
   background-color: #3b82f6; border-color: #2563eb; color: white;
 }
@@ -185,7 +184,7 @@ body {
   background-color: #f97316; border-color: #ea580c; color: white;
 }
 
-/* SIDE PANEL (Right Side) */
+/* SIDE PANEL */
 .side-panel {
   flex: 1;
   background: #f8fafc;
@@ -242,42 +241,79 @@ body {
   background-color: #dc2626;
 }
 
-.winner-message {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: #dcfce7;
-  border: 2px solid #4ade80;
-  border-radius: 8px;
+/* WINNER MODAL STYLES */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-content {
+  background: white;
+  padding: 40px 50px;
+  border-radius: 20px;
   text-align: center;
-  color: #166534;
-  animation: bounceIn 0.5s;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 101;
 }
 
-@keyframes bounceIn {
-  0% { transform: scale(0.8); opacity: 0; }
-  60% { transform: scale(1.05); opacity: 1; }
-  100% { transform: scale(1); }
+.modal-content h2 {
+  color: #16a34a;
+  font-size: 2.5rem;
+  margin: 0 0 10px 0;
 }
 
-/* RESPONSIVE DESIGN PARA SA PHONES AT TABLETS */
+.modal-content p {
+  font-size: 1.2rem;
+  color: #475569;
+  margin-bottom: 25px;
+}
+
+.play-again-btn {
+  padding: 12px 30px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.play-again-btn:hover {
+  background-color: #2563eb;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* RESPONSIVE DESIGN - TINODO NA ANG LAKI PARA SA MOBILE */
 @media (max-width: 768px) {
   .layout-container {
-    padding: 20px; /* Tinaasan ang padding para lumiit yung puting box at makita ang blue background */
+    padding: 3px; 
   }
   
   .main-content {
-    padding: 15px 12px; 
+    padding: 15px 5px; /* Binawasan nang husto ang gilid */
   }
 
   .header-box {
-    margin-bottom: 15px;
-    padding-bottom: 15px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
   }
   
   .logo-text-container {
     flex-direction: column; 
-    gap: 10px;
-    font-size: 1.2rem; 
+    gap: 8px;
+    font-size: 1.1rem; 
   }
   
   .logo-image-container {
@@ -285,8 +321,8 @@ body {
   }
   
   .real-cws-logo {
-    height: 90px;
-    width: 90px;
+    height: 70px;
+    width: 70px;
   }
 
   .logo-word-search span {
@@ -296,40 +332,40 @@ body {
   }
 
   .space {
-    width: 5px; 
+    width: 4px; 
   }
 
   .subtitle {
-    font-size: 0.85rem;
-    padding: 6px 15px;
+    font-size: 0.8rem;
+    padding: 5px 12px;
     margin-top: 5px;
   }
 
   .game-area {
     flex-direction: column; 
-    gap: 15px;
+    gap: 12px;
   }
   
   .grid-container {
     width: 100%;
-    gap: 3px; 
+    gap: 2px; 
   }
 
   .grid-cell {
-    font-size: 1.1rem; /* Pinalaki ang letters */
-    font-weight: 900;  /* Pinakapal para mas mabasa */
-    border-radius: 5px;
+    font-size: 1.45rem; /* Mas pinalaki ang letra */
+    font-weight: 900;
+    border-radius: 4px;
     border-width: 1.5px;
   }
   
   .side-panel {
     width: 100%;
     box-sizing: border-box;
-    padding: 15px;
+    padding: 12px;
   }
 
   .word-item {
-    padding: 8px 10px;
-    font-size: 0.95rem;
+    padding: 6px 8px;
+    font-size: 0.9rem;
   }
 }
