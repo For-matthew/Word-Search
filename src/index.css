@@ -135,7 +135,7 @@ body {
   align-items: center;
   font-size: 1.4rem; 
   font-weight: bold;
-  line-height: 1; /* Para hindi lumampas ang font text */
+  line-height: 1; 
   color: #333;
   cursor: pointer;
   transition: all 0.1s ease;
@@ -295,25 +295,26 @@ body {
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* RESPONSIVE DESIGN - TINODO NA ANG LAKI PARA SA MOBILE */
+/* RESPONSIVE DESIGN - "ZOOMED OUT" LOOK PARA SA MOBILE */
 @media (max-width: 768px) {
   .layout-container {
-    padding: 3px; 
+    padding: 18px; /* Dinagdagan para lumitaw ang blue background */
   }
   
   .main-content {
-    padding: 15px 5px; /* Binawasan nang husto ang gilid */
+    padding: 20px 15px; /* Dinagdagan ang padding sa loob para may breathing room */
+    border-radius: 18px;
   }
 
   .header-box {
-    margin-bottom: 10px;
-    padding-bottom: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
   }
   
   .logo-text-container {
     flex-direction: column; 
     gap: 8px;
-    font-size: 1.1rem; 
+    font-size: 1.05rem; /* Pinaliit para mas proportional */
   }
   
   .logo-image-container {
@@ -321,14 +322,14 @@ body {
   }
   
   .real-cws-logo {
-    height: 70px;
-    width: 70px;
+    height: 65px; /* Pinaliit ang logo para mag-fit sa zoomed-out view */
+    width: 65px;
   }
 
   .logo-word-search span {
-    padding: 4px 6px; 
-    border-radius: 5px;
-    margin: 2px 1px;
+    padding: 3px 6px; 
+    border-radius: 4px;
+    margin: 1px;
   }
 
   .space {
@@ -336,23 +337,23 @@ body {
   }
 
   .subtitle {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     padding: 5px 12px;
     margin-top: 5px;
   }
 
   .game-area {
     flex-direction: column; 
-    gap: 12px;
+    gap: 15px;
   }
   
   .grid-container {
     width: 100%;
-    gap: 2px; 
+    gap: 3px; /* Dinagdagan nang kaunti ang space ng tiles para mas malinis */
   }
 
   .grid-cell {
-    font-size: 1.45rem; /* Mas pinalaki ang letra */
+    font-size: 1.15rem; /* Sakto lang ang laki para sa buong screen */
     font-weight: 900;
     border-radius: 4px;
     border-width: 1.5px;
