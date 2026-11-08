@@ -339,19 +339,28 @@ body {
 /* ========================================================= */
 /* MOBILE LANDSCAPE VIEW                                     */
 /*                                                           */
-/* Layout:  [ GRID CARD ]  [ header         ]                */
-/*                         [ words + reset  ]                */
+/* Layout:  [  GRID CARD (malawak)  ]  [ header         ]    */
+/*                                     [ words (2 cols) ]    */
+/*                                     [ reset          ]    */
 /*                                                           */
-/* Ang header ay nasa kanan para ang buong taas ng screen    */
-/* ay mapunta sa puzzle card (mas malaki ang mga letra).     */
-/* --card-size = taas ng visible screen (--app-h galing sa   */
-/* App.jsx) minus kaunting padding. Walang scroll.           */
+/* --card-h = taas ng visible screen (--app-h galing sa      */
+/* App.jsx) minus kaunting padding. Ang card ay mas malapad  */
+/* kaysa matangkad (rectangular na tiles) at ang kanang      */
+/* panel ay makitid (--panel-w). Walang scroll.              */
+/*                                                           */
+/* Kung gusto mong palakihin ang tiles: dagdagan ang 1.6     */
+/* sa --card-w. Kung gusto mong palakihin ang letra: dagdagan*/
+/* ang 0.74 sa .grid-cell. Words/heading: 0.68 sa --ui-font. */
 /* ========================================================= */
 @media screen and (max-height: 600px) and (orientation: landscape) {
   :root {
     /* Fallback kung walang JS value; pinapalitan ng App.jsx ang --app-h */
     --app-h: 100vh;
-    --card-size: min(calc(var(--app-h) - 22px), 56vw);
+    --card-h: calc(var(--app-h) - 18px);
+    --panel-w: clamp(240px, 36vw, 340px);
+    --card-w: min(calc(var(--card-h) * 1.6), calc(100vw - var(--panel-w) - 34px));
+    /* laki ng text ng heading, words at reset (halos kasing laki ng letra) */
+    --ui-font: calc(var(--card-h) / 12 * 0.68);
   }
 
   @supports (height: 100dvh) {
@@ -359,22 +368,22 @@ body {
   }
 
   .layout-container {
-    padding: 4px;
+    padding: 3px;
     min-height: var(--app-h);
     align-items: center;
   }
 
   /* Dalawang column: puzzle card | header + words */
   .main-content {
-    padding: 6px;
+    padding: 5px;
     border-radius: 12px;
     max-width: 100%;
     width: auto;
     display: grid;
-    grid-template-columns: auto minmax(260px, 460px);
+    grid-template-columns: var(--card-w) var(--panel-w);
     grid-template-rows: auto minmax(0, 1fr);
     column-gap: 10px;
-    row-gap: 6px;
+    row-gap: 4px;
   }
 
   /* Para mailagay ang card at side panel nang direkta sa main-content grid */
@@ -383,9 +392,9 @@ body {
   .grid-card {
     grid-column: 1;
     grid-row: 1 / span 2;
-    width: var(--card-size);
-    height: var(--card-size);
-    padding: 5px;
+    width: var(--card-w);
+    height: var(--card-h);
+    padding: 4px;
     border-width: 1px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
@@ -403,9 +412,9 @@ body {
     aspect-ratio: auto;
     min-width: 0;
     min-height: 0;
-    /* ang letra ay sumusunod sa laki ng cell */
-    font-size: calc(var(--card-size) / 12 * 0.74);
-    border-radius: 4px;
+    /* ang letra ay sumusunod sa taas ng card */
+    font-size: calc(var(--card-h) / 12 * 0.74);
+    border-radius: 5px;
     border-width: 1px;
   }
 
@@ -414,22 +423,22 @@ body {
     grid-column: 2;
     grid-row: 1;
     margin: 0;
-    padding: 0 0 8px 0;
+    padding: 0 0 6px 0;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 4px 10px;
+    gap: 3px 8px;
     border-bottom: none;
     box-shadow: 0 8px 8px -8px rgba(0, 0, 0, 0.3);
   }
 
-  .logo-text-container { gap: 6px; font-size: 1rem; flex-wrap: nowrap; }
+  .logo-text-container { gap: 6px; font-size: 0.75rem; flex-wrap: nowrap; }
   .logo-image-container { margin-left: 0; }
-  .real-cws-logo { height: 32px; width: 32px; box-shadow: 0 2px 5px rgba(0,0,0,0.25); }
+  .real-cws-logo { height: 26px; width: 26px; box-shadow: 0 2px 5px rgba(0,0,0,0.25); }
 
-  .logo-word-search span { padding: 2px 4px; border-radius: 4px; margin: 1px; }
-  .subtitle { font-size: 0.7rem; padding: 2px 8px; margin: 0; }
+  .logo-word-search span { padding: 2px 3px; border-radius: 4px; margin: 1px; }
+  .subtitle { font-size: 0.6rem; padding: 1px 8px; margin: 0; }
 
   .side-panel {
     grid-column: 2;
@@ -437,38 +446,53 @@ body {
     min-height: 0;
     box-sizing: border-box;
     margin: 0;
-    padding: 8px;
+    padding: 6px;
+    border-width: 1px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
   }
 
-  .side-panel h3 { font-size: 0.75rem; margin: 0 0 6px 0; }
+  .side-panel h3 {
+    font-size: var(--ui-font);
+    line-height: 1.15;
+    margin: 0 0 4px 0;
+  }
 
+  /* Words: 2 columns para malaki ang text at sakto sa taas */
   .word-list {
-    flex-direction: column;
-    flex-wrap: nowrap;
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 1fr;
     gap: 4px;
-    margin: 0 0 8px 0;
+    margin: 0 0 5px 0;
     width: 100%;
   }
 
   .word-item {
-    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
     min-width: 0;
-    padding: 4px 8px;
-    font-size: 0.7rem;
+    padding: 2px 4px;
+    border-width: 1px;
+    font-size: var(--ui-font);
+    line-height: 1.1;
   }
 
   .word-item.found-word { transform: none; }
 
   .reset-btn {
-    margin-top: auto;
     flex: none;
+    margin-top: 0;
     max-width: none;
-    padding: 8px;
-    font-size: 0.9rem;
+    padding: 0.45em;
+    font-size: var(--ui-font);
+    line-height: 1.1;
   }
 
   /* Para hindi lumampas ang winner popup sa maikling screen */
@@ -478,14 +502,9 @@ body {
   .play-again-btn { padding: 8px 22px; font-size: 1rem; }
 }
 
-/* Napakaikling screens (hal. iPhone SE, o may makapal na browser bar) */
-@media screen and (max-height: 400px) and (orientation: landscape) {
-  .real-cws-logo { height: 24px; width: 24px; }
-  .logo-text-container { font-size: 0.8rem; }
-  .subtitle { font-size: 0.6rem; }
-  .side-panel { padding: 6px; }
-  .side-panel h3 { font-size: 0.75rem; margin-bottom: 4px; }
-  .word-list { gap: 3px; margin-bottom: 6px; }
-  .word-item { padding: 3px 6px; font-size: 0.62rem; }
-  .reset-btn { padding: 6px; font-size: 0.8rem; }
+/* Napakaikling screens: paliitin lang ang logo/header (ang words ay sumusunod na sa --ui-font) */
+@media screen and (max-height: 340px) and (orientation: landscape) {
+  .real-cws-logo { height: 22px; width: 22px; }
+  .logo-text-container { font-size: 0.7rem; }
+  .subtitle { font-size: 0.55rem; }
 }
