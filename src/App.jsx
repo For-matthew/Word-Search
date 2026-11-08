@@ -26,19 +26,21 @@ export default function App() {
   
   const gridRef = useRef(null);
 
-useEffect(() => {
-  const update = () => {
-    setWindowDimensions({ width: window.innerWidth, height: window.innerHeight });
-    document.documentElement.style.setProperty('--app-h', `${window.innerHeight}px`);
-  };
-  update();
-  window.addEventListener('resize', update);
-  window.addEventListener('orientationchange', update);
-  return () => {
-    window.removeEventListener('resize', update);
-    window.removeEventListener('orientationchange', update);
-  };
-}, []);
+  useEffect(() => {
+    const update = () => {
+      setWindowDimensions({ width: window.innerWidth, height: window.innerHeight });
+      // Totoong taas ng visible area (accurate sa Messenger/FB in-app browser).
+      // Ginagamit ito ng CSS para sa laki ng grid card.
+      document.documentElement.style.setProperty('--app-h', `${window.innerHeight}px`);
+    };
+    update();
+    window.addEventListener('resize', update);
+    window.addEventListener('orientationchange', update);
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('orientationchange', update);
+    };
+  }, []);
 
   const generateBoard = useCallback(() => {
     let newGrid = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(''));
@@ -284,8 +286,9 @@ useEffect(() => {
           </div>
 
           <div className="game-area">
-            <div 
-              className="grid-container" 
+            <div className="grid-card">
+            <div
+              className="grid-container"
               ref={gridRef}
               onMouseLeave={endDrag}
               onTouchMove={handleTouchMove}
@@ -327,6 +330,7 @@ useEffect(() => {
                   );
                 })
               ))}
+            </div>
             </div>
 
             <div className="side-panel">

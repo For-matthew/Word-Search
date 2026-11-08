@@ -178,12 +178,23 @@ body {
   align-items: flex-start;
 }
 
+/* Sariling card ng puzzle: hiwalay sa main white rectangle, may shadow */
+.grid-card {
+  flex: 2;
+  box-sizing: border-box;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 16px;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: repeat(12, 1fr);
   gap: 5px;
-  flex: 2;
+  width: 100%;
   user-select: none;
   touch-action: none;
 }
@@ -328,19 +339,19 @@ body {
 /* ========================================================= */
 /* MOBILE LANDSCAPE VIEW                                     */
 /*                                                           */
-/* Idea: ang laki ng grid ay galing sa TOTAL HEIGHT ng       */
-/* screen (--app-h) minus ang header/padding (--chrome).     */
-/* Kaya palaging sakto ang grid, hindi putol, walang scroll. */
-/* Ang words panel ay nasa KANAN ng grid (gamit ang sobrang  */
-/* lapad ng landscape) para hindi na kailangang mag-scroll.  */
+/* Layout:  [ GRID CARD ]  [ header         ]                */
+/*                         [ words + reset  ]                */
+/*                                                           */
+/* Ang header ay nasa kanan para ang buong taas ng screen    */
+/* ay mapunta sa puzzle card (mas malaki ang mga letra).     */
+/* --card-size = taas ng visible screen (--app-h galing sa   */
+/* App.jsx) minus kaunting padding. Walang scroll.           */
 /* ========================================================= */
 @media screen and (max-height: 600px) and (orientation: landscape) {
   :root {
-    /* Fallback kung walang JS value. Pinapalitan ito ng App.jsx
-       ng window.innerHeight (pinaka-accurate sa Messenger/FB browser). */
+    /* Fallback kung walang JS value; pinapalitan ng App.jsx ang --app-h */
     --app-h: 100vh;
-    --chrome: 72px; /* header + paddings + gaps */
-    --grid-size: min(calc(var(--app-h) - var(--chrome)), 62vw);
+    --card-size: min(calc(var(--app-h) - 22px), 56vw);
   }
 
   @supports (height: 100dvh) {
@@ -353,51 +364,39 @@ body {
     align-items: center;
   }
 
+  /* Dalawang column: puzzle card | header + words */
   .main-content {
-    padding: 6px 10px;
+    padding: 6px;
     border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
     max-width: 100%;
+    width: auto;
+    display: grid;
+    grid-template-columns: auto minmax(260px, 460px);
+    grid-template-rows: auto minmax(0, 1fr);
+    column-gap: 10px;
+    row-gap: 6px;
   }
 
-  .header-box {
-    margin: 0;
-    padding: 0 0 4px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    box-shadow: none;
-    border-bottom: 2px dashed #ccc;
-  }
+  /* Para mailagay ang card at side panel nang direkta sa main-content grid */
+  .game-area { display: contents; }
 
-  .logo-text-container { gap: 6px; font-size: 1rem; flex-wrap: nowrap; }
-  .logo-image-container { margin-left: 0; }
-  .real-cws-logo { height: 32px; width: 32px; box-shadow: 0 2px 5px rgba(0,0,0,0.25); }
-
-  .logo-word-search span { padding: 2px 4px; border-radius: 4px; margin: 1px; }
-  .subtitle { font-size: 0.75rem; padding: 2px 8px; margin: 0; }
-
-  /* Grid sa kaliwa, words sa kanan */
-  .game-area {
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
+  .grid-card {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: var(--card-size);
+    height: var(--card-size);
+    padding: 5px;
+    border-width: 1px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
   }
 
   .grid-container {
-    flex: 0 0 auto;
-    width: var(--grid-size);
-    height: var(--grid-size);
-    aspect-ratio: auto;
+    width: 100%;
+    height: 100%;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     grid-template-rows: repeat(12, minmax(0, 1fr));
     gap: 2px;
-    margin: 0;
   }
 
   .grid-cell {
@@ -405,16 +404,37 @@ body {
     min-width: 0;
     min-height: 0;
     /* ang letra ay sumusunod sa laki ng cell */
-    font-size: calc(var(--grid-size) / 12 * 0.52);
+    font-size: calc(var(--card-size) / 12 * 0.6);
     border-radius: 4px;
     border-width: 1px;
   }
 
+  /* Header: shadow sa ilalim (walang dashed line) */
+  .header-box {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+    padding: 0 0 8px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 4px 10px;
+    border-bottom: none;
+    box-shadow: 0 8px 8px -8px rgba(0, 0, 0, 0.3);
+  }
+
+  .logo-text-container { gap: 6px; font-size: 1rem; flex-wrap: nowrap; }
+  .logo-image-container { margin-left: 0; }
+  .real-cws-logo { height: 32px; width: 32px; box-shadow: 0 2px 5px rgba(0,0,0,0.25); }
+
+  .logo-word-search span { padding: 2px 4px; border-radius: 4px; margin: 1px; }
+  .subtitle { font-size: 0.7rem; padding: 2px 8px; margin: 0; }
+
   .side-panel {
-    flex: 1 1 0;
-    min-width: 0;
-    max-width: 360px;
-    height: var(--grid-size);
+    grid-column: 2;
+    grid-row: 2;
+    min-height: 0;
     box-sizing: border-box;
     margin: 0;
     padding: 8px;
@@ -429,7 +449,7 @@ body {
   .word-list {
     flex-direction: column;
     flex-wrap: nowrap;
-    gap: 5px;
+    gap: 4px;
     margin: 0 0 8px 0;
     width: 100%;
   }
@@ -437,7 +457,7 @@ body {
   .word-item {
     flex: none;
     min-width: 0;
-    padding: 5px 8px;
+    padding: 4px 8px;
     font-size: 0.8rem;
   }
 
@@ -445,6 +465,7 @@ body {
 
   .reset-btn {
     margin-top: auto;
+    flex: none;
     max-width: none;
     padding: 8px;
     font-size: 0.9rem;
@@ -459,13 +480,12 @@ body {
 
 /* Napakaikling screens (hal. iPhone SE, o may makapal na browser bar) */
 @media screen and (max-height: 400px) and (orientation: landscape) {
-  :root { --chrome: 60px; }
-
   .real-cws-logo { height: 24px; width: 24px; }
   .logo-text-container { font-size: 0.8rem; }
-  .subtitle { font-size: 0.65rem; }
+  .subtitle { font-size: 0.6rem; }
+  .side-panel { padding: 6px; }
   .side-panel h3 { font-size: 0.75rem; margin-bottom: 4px; }
-  .word-list { gap: 3px; }
+  .word-list { gap: 3px; margin-bottom: 6px; }
   .word-item { padding: 3px 6px; font-size: 0.7rem; }
   .reset-btn { padding: 6px; font-size: 0.8rem; }
 }
