@@ -18,6 +18,69 @@ body {
   overscroll-behavior-y: contain; 
 }
 
+/* --- ROTATE DEVICE WARNING SCREEN --- */
+.portrait-warning {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--bg-color);
+  background: repeating-conic-gradient(from 0deg, #1eaaf1 0deg 15deg, #36bdfa 15deg 30deg);
+  z-index: 9999;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.portrait-warning h2 {
+  font-size: 2rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  margin-bottom: 10px;
+}
+
+.portrait-warning p {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.phone-icon {
+  width: 80px;
+  height: 120px;
+  border: 4px solid white;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  position: relative;
+  animation: rotatePhone 2s ease-in-out infinite;
+  background: rgba(255,255,255,0.2);
+}
+
+.phone-icon::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: white;
+}
+
+@keyframes rotatePhone {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(90deg); }
+  100% { transform: rotate(90deg); }
+}
+
+/* Ipakita ang warning kapag naka PORTRAIT ang phone */
+@media screen and (max-width: 768px) and (orientation: portrait) {
+  .portrait-warning { display: flex; }
+  .layout-container { display: none !important; }
+}
+/* ------------------------------------ */
+
 .layout-container {
   position: relative;
   min-height: 100vh;
@@ -141,6 +204,10 @@ body {
   transition: all 0.1s ease;
 }
 
+.grid-cell:active {
+  transform: scale(0.9); /* Bouncy effect para sa bata kapag pinindot */
+}
+
 .grid-cell.selected {
   background-color: var(--highlight-color);
   border-color: var(--highlight-border);
@@ -165,24 +232,12 @@ body {
 }
 
 /* FOUND THEMES */
-.grid-cell.found.theme-blue, .word-item.found-word.theme-blue {
-  background-color: #3b82f6; border-color: #2563eb; color: white;
-}
-.grid-cell.found.theme-yellow, .word-item.found-word.theme-yellow {
-  background-color: #eab308; border-color: #ca8a04; color: white;
-}
-.grid-cell.found.theme-red, .word-item.found-word.theme-red {
-  background-color: #ef4444; border-color: #dc2626; color: white;
-}
-.grid-cell.found.theme-green, .word-item.found-word.theme-green {
-  background-color: #22c55e; border-color: #16a34a; color: white;
-}
-.grid-cell.found.theme-purple, .word-item.found-word.theme-purple {
-  background-color: #a855f7; border-color: #9333ea; color: white;
-}
-.grid-cell.found.theme-orange, .word-item.found-word.theme-orange {
-  background-color: #f97316; border-color: #ea580c; color: white;
-}
+.grid-cell.found.theme-blue, .word-item.found-word.theme-blue { background-color: #3b82f6; border-color: #2563eb; color: white; }
+.grid-cell.found.theme-yellow, .word-item.found-word.theme-yellow { background-color: #eab308; border-color: #ca8a04; color: white; }
+.grid-cell.found.theme-red, .word-item.found-word.theme-red { background-color: #ef4444; border-color: #dc2626; color: white; }
+.grid-cell.found.theme-green, .word-item.found-word.theme-green { background-color: #22c55e; border-color: #16a34a; color: white; }
+.grid-cell.found.theme-purple, .word-item.found-word.theme-purple { background-color: #a855f7; border-color: #9333ea; color: white; }
+.grid-cell.found.theme-orange, .word-item.found-word.theme-orange { background-color: #f97316; border-color: #ea580c; color: white; }
 
 /* SIDE PANEL */
 .side-panel {
@@ -216,12 +271,13 @@ body {
   color: #64748b;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   text-align: center;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy hover/found */
   border: 2px solid transparent;
 }
 
 .word-item.found-word {
   text-decoration: line-through;
+  transform: scale(1.05); /* Laki ng konti kapag nahanap */
 }
 
 .reset-btn {
@@ -237,57 +293,30 @@ body {
   transition: background-color 0.2s;
 }
 
-.reset-btn:hover {
-  background-color: #dc2626;
-}
+.reset-btn:hover { background-color: #dc2626; }
 
 /* WINNER MODAL STYLES */
 .modal-overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: flex; justify-content: center; align-items: center;
   z-index: 100;
 }
 
 .modal-content {
-  background: white;
-  padding: 40px 50px;
-  border-radius: 20px;
-  text-align: center;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  background: white; padding: 40px 50px; border-radius: 20px;
+  text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.3);
   animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: 101;
 }
 
-.modal-content h2 {
-  color: #16a34a;
-  font-size: 2.5rem;
-  margin: 0 0 10px 0;
-}
-
-.modal-content p {
-  font-size: 1.2rem;
-  color: #475569;
-  margin-bottom: 25px;
-}
+.modal-content h2 { color: #16a34a; font-size: 2.5rem; margin: 0 0 10px 0; }
+.modal-content p { font-size: 1.2rem; color: #475569; margin-bottom: 25px; }
 
 .play-again-btn {
-  padding: 12px 30px;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.play-again-btn:hover {
-  background-color: #2563eb;
+  padding: 12px 30px; background-color: #3b82f6; color: white;
+  border: none; border-radius: 8px; font-size: 1.2rem; font-weight: bold;
+  cursor: pointer; transition: background-color 0.2s;
 }
 
 @keyframes popIn {
@@ -295,78 +324,71 @@ body {
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* RESPONSIVE DESIGN - "ZOOMED OUT" LOOK PARA SA MOBILE */
-@media (max-width: 768px) {
+/* ========================================================= */
+/* RESPONSIVE DESIGN - MOBILE LANDSCAPE (ZOOMED OUT EFFECT)  */
+/* ========================================================= */
+@media screen and (max-height: 600px) and (orientation: landscape) {
   .layout-container {
-    padding: 18px; /* Dinagdagan para lumitaw ang blue background */
+    padding: 10px; /* Maliit na padding para lumabas yung background pero max space yung game */
+    align-items: stretch; 
   }
   
   .main-content {
-    padding: 20px 15px; /* Dinagdagan ang padding sa loob para may breathing room */
-    border-radius: 18px;
+    padding: 10px 15px; 
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
+  /* Pinaliit ang header para hindi mag-take up ng space */
   .header-box {
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-  }
-  
-  .logo-text-container {
-    flex-direction: column; 
-    gap: 8px;
-    font-size: 1.05rem; /* Pinaliit para mas proportional */
-  }
-  
-  .logo-image-container {
-    margin-left: 0; 
-  }
-  
-  .real-cws-logo {
-    height: 65px; /* Pinaliit ang logo para mag-fit sa zoomed-out view */
-    width: 65px;
-  }
-
-  .logo-word-search span {
-    padding: 3px 6px; 
-    border-radius: 4px;
-    margin: 1px;
-  }
-
-  .space {
-    width: 4px; 
-  }
-
-  .subtitle {
-    font-size: 0.75rem;
-    padding: 5px 12px;
-    margin-top: 5px;
-  }
-
-  .game-area {
-    flex-direction: column; 
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 15px;
   }
   
+  .logo-text-container { gap: 8px; font-size: 1.1rem; flex-direction: row; }
+  .logo-image-container { margin-left: 0; }
+  .real-cws-logo { height: 40px; width: 40px; } /* Sobrang liit na logo para makatipid sa height */
+
+  .logo-word-search span { padding: 2px 4px; border-radius: 4px; margin: 1px; }
+  .subtitle { font-size: 0.75rem; padding: 4px 10px; margin-top: 0; }
+
+  /* Magkatabi ang grid at word list sa landscape */
+  .game-area {
+    flex-direction: row; 
+    gap: 15px;
+    flex: 1;
+    min-height: 0;
+  }
+  
   .grid-container {
-    width: 100%;
-    gap: 3px; /* Dinagdagan nang kaunti ang space ng tiles para mas malinis */
+    height: 100%;
+    aspect-ratio: 1;
+    margin: 0 auto;
+    gap: 2px;
   }
 
   .grid-cell {
-    font-size: 1.15rem; /* Sakto lang ang laki para sa buong screen */
-    font-weight: 900;
+    font-size: 1.1rem; /* Swak sa screen */
     border-radius: 4px;
-    border-width: 1.5px;
+    border-width: 1px;
   }
   
   .side-panel {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 12px;
+    width: 220px; /* Fix ang width ng side panel */
+    padding: 10px;
+    overflow-y: auto; /* Kung maraming words, magi-scroll lang yung right side */
+    display: flex;
+    flex-direction: column;
   }
 
-  .word-item {
-    padding: 6px 8px;
-    font-size: 0.9rem;
-  }
+  .side-panel h3 { font-size: 1rem; margin-bottom: 10px; }
+  .word-list { gap: 5px; margin-bottom: 10px; }
+  .word-item { padding: 4px 8px; font-size: 0.8rem; }
+  .reset-btn { padding: 8px; font-size: 0.9rem; margin-top: auto; }
 }

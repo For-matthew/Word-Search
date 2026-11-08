@@ -17,7 +17,7 @@ const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 export default function App() {
   const [grid, setGrid] = useState([]);
   const [selectedCells, setSelectedCells] = useState([]);
-  const [dragStartCell, setDragStartCell] = useState(null); // Bagong state para sa straight line tracking
+  const [dragStartCell, setDragStartCell] = useState(null); 
   const [wrongCells, setWrongCells] = useState([]);
   const [foundWordsMap, setFoundWordsMap] = useState({});
   const [isDragging, setIsDragging] = useState(false);
@@ -133,13 +133,11 @@ export default function App() {
   const continueDrag = (r, c) => {
     if (!isDragging || !dragStartCell) return;
     
-    // Straight-line calculation
     const dr = r - dragStartCell.r;
     const dc = c - dragStartCell.c;
     const absDr = Math.abs(dr);
     const absDc = Math.abs(dc);
 
-    // Titignan kung ang hugis ng drag ay deretso (horizontal, vertical, o diagonal)
     if (absDr === 0 || absDc === 0 || absDr === absDc) {
       const stepR = absDr === 0 ? 0 : dr / absDr;
       const stepC = absDc === 0 ? 0 : dc / absDc;
@@ -227,6 +225,13 @@ export default function App() {
 
   return (
     <>
+      {/* WARNING OVERLAY KAPAG NAKA-PORTRAIT ANG PHONE */}
+      <div className="portrait-warning">
+        <div className="phone-icon"></div>
+        <h2>OOPS!</h2>
+        <p>Please rotate your phone<br/>to landscape to play!</p>
+      </div>
+
       {isWinner && (
         <div className="modal-overlay">
           <Confetti 
@@ -324,6 +329,8 @@ export default function App() {
                       key={wordObj.search} 
                       className={isFound ? `word-item found-word ${foundWordData.theme}` : "word-item"}
                     >
+                      {/* Dito natin idinagdag yung Star icon kapag nahanap */}
+                      {isFound && <span style={{ marginRight: '5px' }}>⭐</span>}
                       {wordObj.display}
                     </li>
                   );
