@@ -82,7 +82,11 @@ export default function App() {
       return placed;
     };
 
-    WORDS_TO_FIND.forEach(wordObj => {
+    // FIX: I-sort ang words para maunang ilagay sa board ang pinakamahaba (CHURCH LEADER)
+    // Para maiwasan ang bug na hindi nagkakasya ang word sa huli.
+    const sortedWords = [...WORDS_TO_FIND].sort((a, b) => b.search.length - a.search.length);
+    
+    sortedWords.forEach(wordObj => {
       if (!placeWord(wordObj.search)) {
           console.warn(`Could not place ${wordObj.search}`);
       }
@@ -225,7 +229,6 @@ export default function App() {
 
   return (
     <>
-      {/* WARNING OVERLAY KAPAG NAKA-PORTRAIT ANG PHONE */}
       <div className="portrait-warning">
         <div className="phone-icon"></div>
         <h2>OOPS!</h2>
@@ -233,11 +236,13 @@ export default function App() {
       </div>
 
       {isWinner && (
-        <div className="modal-overlay">
+        <div className="modal-overlay" style={{ zIndex: 99999 }}>
+          {/* FIX: Binigyan natin ng absolute high z-index ang confetti para sure na lilitaw */}
           <Confetti 
             width={windowDimensions.width} 
             height={windowDimensions.height} 
             recycle={true}
+            style={{ zIndex: 100000, position: 'fixed', top: 0, left: 0 }} 
           />
           <div className="modal-content">
             <h2>GREAT JOB!</h2>
@@ -329,7 +334,6 @@ export default function App() {
                       key={wordObj.search} 
                       className={isFound ? `word-item found-word ${foundWordData.theme}` : "word-item"}
                     >
-                      {/* Dito natin idinagdag yung Star icon kapag nahanap */}
                       {isFound && <span style={{ marginRight: '5px' }}>⭐</span>}
                       {wordObj.display}
                     </li>
